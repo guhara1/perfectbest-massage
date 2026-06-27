@@ -82,6 +82,33 @@ const authorityLinks = `<ul class="link-list">
   <li><a href="https://schema.org/" target="_blank" rel="noopener">Schema.org</a></li>
 </ul>`;
 
+const pricingCourses = [
+  { name: "60분 코스", minutes: "60분", price: "90,000", numeric: 90000, note: "핵심 부위 위주 가벼운 이완", recommended: false },
+  { name: "90분 코스", minutes: "90분", price: "150,000", numeric: 150000, note: "전신 균형 표준 구성·아로마 포함", recommended: true },
+  { name: "120분 코스", minutes: "120분", price: "180,000", numeric: 180000, note: "구석구석 집중하는 프리미엄 구성", recommended: false },
+];
+
+function pricingSection() {
+  return `<section class="pricing" id="pricing">
+  <div class="pricing-head">
+    <span class="pricing-kicker">기본 요금</span>
+    <h2>코스 시간으로 보는 마사지 가격표</h2>
+    <p>관리 시간(60·90·120분)을 기준으로 정리한 기본 금액입니다. 방문 지역과 시간대, 이동 거리에 따라 최종 금액은 상담 시 확정됩니다.</p>
+  </div>
+  <div class="pricing-grid">
+    ${pricingCourses.map((course) => `<article class="pricing-card${course.recommended ? " is-recommended" : ""}">
+      ${course.recommended ? '<span class="pricing-badge">추천</span>' : ""}
+      <h3>${course.name}</h3>
+      <p class="pricing-price"><strong>${course.price}</strong><span>원</span></p>
+      <p class="pricing-time">${course.minutes}</p>
+      <p class="pricing-note">${course.note}</p>
+      <a class="pricing-btn" href="tel:${phone}" aria-label="${course.name} 예약 문의">예약 문의</a>
+    </article>`).join("")}
+  </div>
+  <p class="pricing-caption">방문 지역과 시간대, 이동 거리에 따라 최종 금액은 통화 시 확정됩니다. <a href="/check/travel-fee/">요금·예약 기준 자세히 보기</a></p>
+</section>`;
+}
+
 function section(title, body) {
   return `<section><h2>${title}</h2>${body}</section>`;
 }
@@ -297,7 +324,26 @@ function schemaBlocks(page, canonical) {
   const crumbs = [{ "@type": "ListItem", position: 1, name: "홈", item: `${baseUrl}/` }].concat(page.crumbs.map(([label, href], index) => ({ "@type": "ListItem", position: index + 2, name: label, ...(href ? { item: `${baseUrl}${href}` } : {}) })));
   const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs };
   const image = { "@context": "https://schema.org", "@type": "ImageObject", name: page.title, url: searchImage, contentUrl: searchImage, thumbnailUrl: searchImage, width: 1200, height: 630, caption: page.title, inLanguage: "ko", representativeOfPage: true, mainEntityOfPage: canonical };
-  const blocks = [org, webPage, breadcrumb, image];
+  const offerCatalog = {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: "간다GO 마사지 기본 가격표",
+    itemListElement: pricingCourses.map((course) => ({
+      "@type": "Offer",
+      name: course.name,
+      price: course.numeric,
+      priceCurrency: "KRW",
+      availability: "https://schema.org/InStock",
+      itemOffered: {
+        "@type": "Service",
+        name: `간다GO ${course.name}`,
+        serviceType: "마사지 관리",
+        provider: { "@id": `${baseUrl}/#organization` },
+        areaServed: { "@type": "AdministrativeArea", name: "서울·경기·인천" },
+      },
+    })),
+  };
+  const blocks = [org, webPage, breadcrumb, image, offerCatalog];
   if (page.faq?.length) blocks.push({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: page.faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
   return blocks.map((block) => `<script type="application/ld+json">\n${JSON.stringify(block, null, 2)}\n</script>`).join("\n");
 }
@@ -358,6 +404,7 @@ ${page.hero || ""}<main class="site-main">
     <article class="page-content">
       ${renderBreadcrumb(page.crumbs)}
       ${h1}
+      ${pricingSection()}
       ${body}
     </article>
   </div>

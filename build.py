@@ -25,6 +25,62 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR = ROOT
 MIN_INDEX_CHARS = 2000
 SEARCH_IMAGE = BASE_URL.rstrip("/") + "/assets/search-thumbnail.webp"
+PRICING_COURSES = [
+    {
+        "name": "60분 코스",
+        "minutes": "60분",
+        "price": "90,000",
+        "numeric": 90000,
+        "note": "핵심 부위 위주 가벼운 이완",
+        "recommended": False,
+    },
+    {
+        "name": "90분 코스",
+        "minutes": "90분",
+        "price": "150,000",
+        "numeric": 150000,
+        "note": "전신 균형 표준 구성·아로마 포함",
+        "recommended": True,
+    },
+    {
+        "name": "120분 코스",
+        "minutes": "120분",
+        "price": "180,000",
+        "numeric": 180000,
+        "note": "구석구석 집중하는 프리미엄 구성",
+        "recommended": False,
+    },
+]
+
+
+def render_pricing_section() -> str:
+    cards = []
+    for course in PRICING_COURSES:
+        badge = '<span class="pricing-badge">추천</span>' if course["recommended"] else ""
+        recommended = " is-recommended" if course["recommended"] else ""
+        cards.append(
+            f'<article class="pricing-card{recommended}">'
+            f"{badge}"
+            f"<h3>{course['name']}</h3>"
+            f"<p class=\"pricing-price\"><strong>{course['price']}</strong><span>원</span></p>"
+            f"<p class=\"pricing-time\">{course['minutes']}</p>"
+            f"<p class=\"pricing-note\">{course['note']}</p>"
+            f"<a class=\"pricing-btn\" href=\"tel:{PHONE}\" aria-label=\"{course['name']} 예약 문의\">예약 문의</a>"
+            "</article>"
+        )
+    return (
+        '<section class="pricing" id="pricing">'
+        '<div class="pricing-head">'
+        '<span class="pricing-kicker">기본 요금</span>'
+        "<h2>코스 시간으로 보는 마사지 가격표</h2>"
+        "<p>관리 시간(60·90·120분)을 기준으로 정리한 기본 금액입니다. "
+        "방문 지역과 시간대, 이동 거리에 따라 최종 금액은 상담 시 확정됩니다.</p>"
+        "</div>"
+        f'<div class="pricing-grid">{"".join(cards)}</div>'
+        '<p class="pricing-caption">방문 지역과 시간대, 이동 거리에 따라 최종 금액은 통화 시 확정됩니다. '
+        '<a href="/check/travel-fee/">요금·예약 기준 자세히 보기</a></p>'
+        "</section>"
+    )
 
 
 def text_length(body_html: str) -> int:
@@ -197,6 +253,35 @@ def make_image_schema(title: str, canonical: str) -> dict:
     }
 
 
+def make_offer_catalog_schema() -> dict:
+    base = BASE_URL.rstrip("/")
+    return {
+        "@context": "https://schema.org",
+        "@type": "OfferCatalog",
+        "name": "간다GO 마사지 기본 가격표",
+        "itemListElement": [
+            {
+                "@type": "Offer",
+                "name": course["name"],
+                "price": course["numeric"],
+                "priceCurrency": "KRW",
+                "availability": "https://schema.org/InStock",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": f"간다GO {course['name']}",
+                    "serviceType": "마사지 관리",
+                    "provider": {"@id": base + "/#organization"},
+                    "areaServed": {
+                        "@type": "AdministrativeArea",
+                        "name": "서울·경기·인천",
+                    },
+                },
+            }
+            for course in PRICING_COURSES
+        ],
+    }
+
+
 def make_faq_schema(faq) -> dict:
     return {
         "@context": "https://schema.org",
@@ -250,6 +335,7 @@ def render_page(page: dict) -> str:
         make_webpage_schema(title, desc, canonical),
         make_breadcrumb_schema(crumbs),
         make_image_schema(title, canonical),
+        make_offer_catalog_schema(),
     ]
     if page.get("faq"):
         blocks.append(make_faq_schema(page["faq"]))
@@ -307,6 +393,7 @@ def render_page(page: dict) -> str:
     <article class="page-content">
       {render_breadcrumb(crumbs)}
       {h1_html}
+      {render_pricing_section()}
       {body}
     </article>
   </div>

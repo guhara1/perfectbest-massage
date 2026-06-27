@@ -532,6 +532,190 @@ strong {
   transform: translateX(0);
 }
 
+/* Pricing */
+.pricing {
+  position: relative;
+  margin: 8px 0 56px;
+  padding: 40px 0 8px;
+}
+
+.pricing::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 2px;
+  background: var(--orange-primary);
+}
+
+.pricing-head {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.pricing-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  color: var(--orange-light);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.pricing h2 {
+  margin-top: 0;
+  color: var(--gold-soft);
+  font-size: 1.8rem;
+}
+
+.pricing h2::before {
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--orange-primary), var(--gold-soft));
+}
+
+.pricing-head p {
+  color: var(--text-dim);
+  font-size: 0.96rem;
+  line-height: 1.85;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 26px 0 22px;
+}
+
+.pricing-card {
+  position: relative;
+  display: flex;
+  min-height: 320px;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px 26px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 195, 111, 0.08), transparent 44%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(46, 165, 154, 0.035)),
+    rgba(17, 22, 35, 0.78);
+  border: 1px solid rgba(199, 161, 90, 0.24);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.pricing-card.is-recommended {
+  border-color: rgba(255, 195, 111, 0.86);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 195, 111, 0.16), transparent 48%),
+    linear-gradient(145deg, rgba(32, 39, 62, 0.96), rgba(23, 26, 40, 0.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 40px rgba(244, 123, 63, 0.13);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 54px;
+  padding: 7px 14px;
+  color: #21160d;
+  font-size: 0.78rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(199, 161, 90, 0.28);
+}
+
+.pricing-card h3 {
+  margin: 0 0 20px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1.12rem;
+  font-weight: 900;
+}
+
+.pricing-price {
+  margin: 0;
+  line-height: 1;
+}
+
+.pricing-price strong {
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 2.55rem);
+  line-height: 1;
+}
+
+.pricing-card.is-recommended .pricing-price strong {
+  color: var(--gold-soft);
+}
+
+.pricing-price span {
+  margin-left: 4px;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.pricing-time {
+  margin: 8px 0 26px;
+  color: var(--orange-light);
+  font-weight: 900;
+}
+
+.pricing-note {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 0 28px;
+  color: var(--text-dim);
+  font-size: 0.94rem;
+}
+
+.pricing-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  color: var(--gold-soft);
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(199, 161, 90, 0.5);
+  border-radius: 8px;
+}
+
+.pricing-card.is-recommended .pricing-btn {
+  color: #1f160c;
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+  border-color: transparent;
+  box-shadow: 0 8px 22px rgba(199, 161, 90, 0.22);
+}
+
+.pricing-btn:hover {
+  color: white;
+  background: var(--orange-primary);
+  border-color: var(--orange-primary);
+}
+
+.pricing-caption {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
+.pricing-caption a {
+  color: var(--orange-light);
+  font-weight: 800;
+}
+
 /* ── 푸터 ─────────────────────────────── */
 .site-footer {
   background: var(--bg-2);
@@ -968,6 +1152,26 @@ strong {
 
   .card-grid {
     grid-template-columns: 1fr;
+  }
+
+  .pricing {
+    margin-bottom: 40px;
+    padding-top: 34px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pricing-card {
+    min-height: 0;
+    padding: 28px 20px 22px;
+  }
+
+  .pricing-note {
+    display: block;
+    margin-bottom: 22px;
   }
 
   .header-call {
