@@ -7,6 +7,7 @@ const brand = "간다GO";
 const phone = "0508-202-4719";
 const telegram = "https://t.me/googleseolab";
 const desc = "서울·경기·인천 출장마사지 예약 전 방문 가능 지역과 이용 기준을 확인하세요.";
+const searchImage = `${baseUrl}/assets/search-thumbnail.webp`;
 
 const seoulDistricts = [
   { name: "종로구", slug: "jongno-gu", hubs: ["광화문", "종각", "혜화"], dongs: [["청운효자동", "cheongun-hyoja"], ["사직동", "sajik"], ["삼청동", "samcheong"], ["부암동", "buam"], ["평창동", "pyeongchang"], ["무악동", "muak"], ["교남동", "gyonam"], ["가회동", "gahoe"], ["종로1·2·3·4가동", "jongno-1-4ga"], ["종로5·6가동", "jongno-5-6ga"], ["이화동", "ihwa"], ["혜화동", "hyehwa"], ["창신동", "changsin"], ["숭인동", "sungin"]] },
@@ -291,11 +292,11 @@ function renderToc(items) {
 }
 
 function schemaBlocks(page, canonical) {
-  const org = { "@context": "https://schema.org", "@type": "Organization", "@id": `${baseUrl}/#organization`, name: brand, url: `${baseUrl}/`, logo: `${baseUrl}/assets/apple-touch-icon.png`, image: `${baseUrl}/assets/apple-touch-icon.png`, telephone: phone, areaServed: { "@type": "AdministrativeArea", name: "서울·경기·인천" }, contactPoint: { "@type": "ContactPoint", telephone: phone, contactType: "reservations", availableLanguage: ["ko"], areaServed: "KR" } };
+  const org = { "@context": "https://schema.org", "@type": "Organization", "@id": `${baseUrl}/#organization`, name: brand, url: `${baseUrl}/`, logo: `${baseUrl}/assets/apple-touch-icon.png`, image: searchImage, telephone: phone, areaServed: { "@type": "AdministrativeArea", name: "서울·경기·인천" }, contactPoint: { "@type": "ContactPoint", telephone: phone, contactType: "reservations", availableLanguage: ["ko"], areaServed: "KR" } };
   const webPage = { "@context": "https://schema.org", "@type": "WebPage", name: page.title, description: page.desc, url: canonical, inLanguage: "ko", isPartOf: { "@id": `${baseUrl}/#organization` }, publisher: { "@id": `${baseUrl}/#organization` } };
   const crumbs = [{ "@type": "ListItem", position: 1, name: "홈", item: `${baseUrl}/` }].concat(page.crumbs.map(([label, href], index) => ({ "@type": "ListItem", position: index + 2, name: label, ...(href ? { item: `${baseUrl}${href}` } : {}) })));
   const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: crumbs };
-  const image = { "@context": "https://schema.org", "@type": "ImageObject", name: page.title, url: `${baseUrl}/assets/apple-touch-icon.png`, contentUrl: `${baseUrl}/assets/apple-touch-icon.png`, thumbnailUrl: `${baseUrl}/assets/favicon-32.png`, caption: page.title, inLanguage: "ko", representativeOfPage: true, mainEntityOfPage: canonical };
+  const image = { "@context": "https://schema.org", "@type": "ImageObject", name: page.title, url: searchImage, contentUrl: searchImage, thumbnailUrl: searchImage, width: 1200, height: 630, caption: page.title, inLanguage: "ko", representativeOfPage: true, mainEntityOfPage: canonical };
   const blocks = [org, webPage, breadcrumb, image];
   if (page.faq?.length) blocks.push({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: page.faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
   return blocks.map((block) => `<script type="application/ld+json">\n${JSON.stringify(block, null, 2)}\n</script>`).join("\n");
@@ -320,11 +321,12 @@ function render(page) {
 <meta property="og:description" content="${page.desc}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:site_name" content="${brand}">
-<meta property="og:image" content="${baseUrl}/assets/apple-touch-icon.png">
-<meta property="og:image:width" content="180">
-<meta property="og:image:height" content="180">
+<meta property="og:image" content="${searchImage}">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${baseUrl}/assets/apple-touch-icon.png">
+<meta name="twitter:image" content="${searchImage}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=2">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
 <link rel="icon" href="/favicon.ico?v=2" sizes="48x48">

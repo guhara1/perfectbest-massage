@@ -24,6 +24,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 # 빌드 결과물을 저장소 루트에 직접 출력한다.
 PUBLIC_DIR = ROOT
 MIN_INDEX_CHARS = 2000
+SEARCH_IMAGE = BASE_URL.rstrip("/") + "/assets/search-thumbnail.webp"
 
 
 def text_length(body_html: str) -> int:
@@ -126,7 +127,7 @@ def make_org_schema() -> dict:
         "name": BRAND,
         "url": base + "/",
         "logo": base + "/assets/apple-touch-icon.png",
-        "image": base + "/assets/apple-touch-icon.png",
+        "image": SEARCH_IMAGE,
         "telephone": PHONE,
         "areaServed": {"@type": "AdministrativeArea", "name": "서울·경기·인천"},
         "contactPoint": {
@@ -184,9 +185,11 @@ def make_image_schema(title: str, canonical: str) -> dict:
         "@context": "https://schema.org",
         "@type": "ImageObject",
         "name": title,
-        "url": base + "/assets/apple-touch-icon.png",
-        "contentUrl": base + "/assets/apple-touch-icon.png",
-        "thumbnailUrl": base + "/assets/favicon-32.png",
+        "url": SEARCH_IMAGE,
+        "contentUrl": SEARCH_IMAGE,
+        "thumbnailUrl": SEARCH_IMAGE,
+        "width": 1200,
+        "height": 630,
         "caption": title,
         "inLanguage": "ko",
         "representativeOfPage": True,
@@ -266,11 +269,12 @@ def render_page(page: dict) -> str:
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:site_name" content="{BRAND}">
-<meta property="og:image" content="{BASE_URL.rstrip('/')}/assets/apple-touch-icon.png">
-<meta property="og:image:width" content="180">
-<meta property="og:image:height" content="180">
+<meta property="og:image" content="{SEARCH_IMAGE}">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{BASE_URL.rstrip('/')}/assets/apple-touch-icon.png">
+<meta name="twitter:image" content="{SEARCH_IMAGE}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?v=2">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
 <link rel="icon" href="/favicon.ico?v=2" sizes="48x48">
