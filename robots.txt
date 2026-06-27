@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://perfectbest-massage.pages.dev/sitemap.xml
+Sitemap: https://guhara1.github.io/perfectbest-massage/sitemap.xml

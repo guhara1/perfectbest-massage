@@ -1,6 +1,6 @@
 # 수도권 출장마사지 사이트 공통 설정
 
-BASE_URL = "https://perfectbest-massage.pages.dev"
+BASE_URL = "https://guhara1.github.io/perfectbest-massage"
 
 BRAND = "간다GO"
 PHONE = "0508-202-4719"
